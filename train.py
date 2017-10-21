@@ -142,7 +142,7 @@ def irfanet(eeg_length,num_classes, kernel_size):
 	x = res_subsam(x,filters=[64,128],kernel_size=kernel_size,subsam=2)
 	x = res_nosub(x,filters=[128,128],kernel_size=kernel_size)
 	x = res_subsam(x,filters=[128,192],kernel_size=kernel_size,subsam=2)
-	x = res_nosub(x,filters=[128,192],kernel_size=kernel_size)
+	x = res_nosub(x,filters=[192,192],kernel_size=kernel_size)
 	x = res_subsam(x,filters=[192,256],kernel_size=kernel_size,subsam=2)
 	#x = res_nosub(x,filters=[192,192],kernel_size=kernel_size)
 	#x = res_subsam(x,filters=[192,192],kernel_size=kernel_size,subsam=2)
