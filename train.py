@@ -142,8 +142,8 @@ def irfanet(eeg_length,num_classes, kernel_size):
 	x = res_subsam(x,filters=[64,128],kernel_size=kernel_size,subsam=2)
 	x = res_nosub(x,filters=[128,128],kernel_size=kernel_size)
 	x = res_subsam(x,filters=[128,192],kernel_size=kernel_size,subsam=2)
-	x = res_nosub(x,filters=[192,192],kernel_size=kernel_size)
-	x = res_subsam(x,filters=[192,256],kernel_size=kernel_size,subsam=2)
+	x = res_nosub(x,filters=[128,192],kernel_size=kernel_size)
+	x = res_subsam(x,filters=[128,256],kernel_size=kernel_size,subsam=2)
 	#x = res_nosub(x,filters=[192,192],kernel_size=kernel_size)
 	#x = res_subsam(x,filters=[192,192],kernel_size=kernel_size,subsam=2)
 	#x = res_nosub(x,filters=[192,192],kernel_size=kernel_size)
@@ -160,7 +160,7 @@ def irfanet(eeg_length,num_classes, kernel_size):
 		
 	model = Model(EEG_input, x)
 	#model.load_weights(filepath='/home/prio/Keras/thesis/irfanet-18/tmp/1DCNN_191017(2)/weights.108-0.78.hdf5',by_name=False)
-	adm = Adam(lr=1e-2, decay=1e-4)
+	adm = Adam(lr=1e-3, decay=1e-6)
 	model.compile(optimizer=adm, loss='categorical_crossentropy', metrics=['accuracy'])
 	
 	return model
@@ -184,7 +184,7 @@ if __name__ == '__main__':
 	Y=Y-1
 
 	#Use random splitting into training and test
-	x_train, x_test, y__train, y__test = train_test_split(X,Y,test_size=0.33, random_state=1)
+	x_train, x_test, y__train, y__test = train_test_split(X,Y,test_size=0.5, random_state=1)
 	x_train = np.reshape(x_train,(x_train.shape[0],3000,1))
 	x_test = np.reshape(x_test,(x_test.shape[0],3000,1))
 
