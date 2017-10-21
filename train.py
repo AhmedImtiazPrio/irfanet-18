@@ -137,13 +137,13 @@ def irfanet(eeg_length,num_classes, kernel_size):
 	x = Activation('relu')(x)
 	
 	x = res_first(x,filters=[64,64],kernel_size=kernel_size)
-	x = res_subsam(x,filters=[64,128],kernel_size=kernel_size,subsam=4)
+	x = res_subsam(x,filters=[64,128],kernel_size=kernel_size,subsam=2)
 	x = res_nosub(x,filters=[64,128],kernel_size=kernel_size)
-	x = res_subsam(x,filters=[64,256],kernel_size=kernel_size,subsam=4)
-	#x = res_nosub(x,filters=[128,128],kernel_size=kernel_size)
-	#x = res_subsam(x,filters=[128,128],kernel_size=kernel_size,subsam=2)
-	#x = res_nosub(x,filters=[128,128],kernel_size=kernel_size)
-	#x = res_subsam(x,filters=[128,192],kernel_size=kernel_size,subsam=2)
+	x = res_subsam(x,filters=[64,128],kernel_size=kernel_size,subsam=2)
+	x = res_nosub(x,filters=[128,128],kernel_size=kernel_size)
+	x = res_subsam(x,filters=[128,192],kernel_size=kernel_size,subsam=2)
+	x = res_nosub(x,filters=[128,192],kernel_size=kernel_size)
+	x = res_subsam(x,filters=[192,256],kernel_size=kernel_size,subsam=2)
 	#x = res_nosub(x,filters=[192,192],kernel_size=kernel_size)
 	#x = res_subsam(x,filters=[192,192],kernel_size=kernel_size,subsam=2)
 	#x = res_nosub(x,filters=[192,192],kernel_size=kernel_size)
@@ -159,7 +159,7 @@ def irfanet(eeg_length,num_classes, kernel_size):
 	x = Dense(num_classes,activation='softmax')(x)
 		
 	model = Model(EEG_input, x)
-	model.load_weights(filepath='/home/prio/Keras/thesis/irfanet-8/tmp/1DCNN_191017(2)/weights.108-0.78.hdf5',by_name=False)
+	#model.load_weights(filepath='/home/prio/Keras/thesis/irfanet-18/tmp/1DCNN_191017(2)/weights.108-0.78.hdf5',by_name=False)
 	adm = Adam(lr=1e-2, decay=1e-4)
 	model.compile(optimizer=adm, loss='categorical_crossentropy', metrics=['accuracy'])
 	
@@ -205,10 +205,10 @@ if __name__ == '__main__':
 	
 	model = irfanet(eeg_length=eeg_length,num_classes=num_classes, kernel_size=kernel_size)
 	#plot_model(model, to_file='model.png', show_shapes=True, show_layer_names=False, rankdir='TB')
-	mdlchk=ModelCheckpoint(filepath='/home/prio/Keras/thesis/irfanet-8/tmp/1DCNN_211017/weights.{epoch:02d}-{val_acc:.4f}.hdf5',monitor='val_acc',save_best_only=False,mode='max')
+	mdlchk=ModelCheckpoint(filepath='/home/prio/Keras/thesis/irfanet-18/tmp/1DCNN_211017/weights.{epoch:02d}-{val_acc:.4f}-{val_loss:.4f}.hdf5',monitor='val_acc',save_best_only=False,mode='max')
 	tensbd=TensorBoard(log_dir='./logs211017',batch_size=batch_size)
 	csv_logger = CSVLogger('training_logs211017.log',separator=',', append=True )
-	reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1,patience=6, min_lr=0.0001)
+	#reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1,patience=6, min_lr=0.0001)
 
 	model.fit(x_train,y_train,
 	 batch_size=batch_size,
